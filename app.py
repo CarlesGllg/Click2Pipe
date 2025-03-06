@@ -14,7 +14,8 @@ def listen_to_webhook():
     
     
     # Get the webhook data and split it into a list
-    elements = data.split(',')
+    #elements = data.split(',')
+    elements = data
 
     # Initialize a variable to hold the extracted value
     extracted_value = None
