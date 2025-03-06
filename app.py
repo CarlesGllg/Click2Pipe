@@ -34,8 +34,8 @@ def listen_to_webhook():
     # Call Pipedrive API to create the follow-up activity
     
     #create_pipedrive_activity(pipedrive_oid, comment)
-
-    return jsonify({"status": "success"}), 200
+    return extracted_value, 200
+    #return jsonify({"status": "success"}), 200
 
 # Function to create an activity in Pipedrive
 def create_pipedrive_activity(pipedrive_oid, comment):
