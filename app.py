@@ -14,8 +14,7 @@ def listen_to_webhook():
     
     
     # Get the webhook data and split it into a list
-    #elements = data.split(',')
-    elements = data
+    elements = data.split(',')
 
     # Initialize a variable to hold the extracted value
     extracted_value = None
@@ -23,6 +22,7 @@ def listen_to_webhook():
     # Iterate through the elements to find one containing "PDOID-"
     for element in elements:
         if "PDOID-" in element:
+            print("Element:", element)
             # Remove the "PDOID-" substring and store the result
             extracted_value = element.replace("PDOID-", "")
             break  # Exit the loop once we find the first match
@@ -35,8 +35,7 @@ def listen_to_webhook():
     # Call Pipedrive API to create the follow-up activity
     
     #create_pipedrive_activity(pipedrive_oid, comment)
-    return extracted_value, 200
-    #return jsonify({"status": "success"}), 200
+    return jsonify({"status": "success"}), 200
 
 # Function to create an activity in Pipedrive
 def create_pipedrive_activity(pipedrive_oid, comment):
