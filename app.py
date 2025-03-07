@@ -1,4 +1,4 @@
-ERSfrom flask import Flask, request, jsonify
+from flask import Flask, request, jsonify
 import requests
 
 app = Flask(__name__)
@@ -17,12 +17,12 @@ def listen_to_webhook():
     url = f'https://api.clickup.com/api/v2/task/{task_id}/comment'
 
     # Set the headers for the API request, including the Authorization token
-    headers = {
+    HEADERS = {
         'Authorization': 'pk_82705525_4FUTKYOJDRLEJSF270VOWZW3RQZ80F0T'
     }
     
     # Send GET request to the ClickUp API
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=HEADERS)
     
     # Check the response status code
     if response.status_code == 200:
