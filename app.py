@@ -7,9 +7,12 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def listen_to_webhook():
     data = request.json  # This will contain the incoming JSON payload from ClickUp
-    print("Received data:", data)  # Log the received data (for debugging purposes)
+    #print("Received data:", data)  # Log the received data (for debugging purposes)
 
-    custom_fields = data.get('custom_fields', [])
+    payload = data.get('payload',[])
+    print("PAYLOAD: ",payload)
+    custom_fields = payload.get('custom_fields', [])
+    print("CUSTOM: ", custom_fields)
     
     print("PUNT 0. Custom = ",custom_fields)
     # Get the webhook data and split it into a list
