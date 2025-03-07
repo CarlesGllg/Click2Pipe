@@ -11,6 +11,7 @@ def listen_to_webhook():
 
     payload = data.get('payload',[])
     task_id = data.get('id')
+    print("ID: ", task_id)
     print("PAYLOAD: ",payload)
 
     # Define the URL for getting task comments
