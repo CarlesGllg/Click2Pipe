@@ -10,7 +10,40 @@ def listen_to_webhook():
     #print("Received data:", data)  # Log the received data (for debugging purposes)
 
     payload = data.get('payload',[])
+    task_id = data.get('id')
     print("PAYLOAD: ",payload)
+
+    # Define the URL for getting task comments
+    url = f'https://api.clickup.com/api/v2/task/{task_id}/comment'
+
+    # Set the headers for the API request, including the Authorization token
+    headers = {
+        'Authorization': 'pk_82705525_4FUTKYOJDRLEJSF270VOWZW3RQZ80F0T'
+    }
+    
+    # Send GET request to the ClickUp API
+    response = requests.get(url, headers=headers)
+    
+    # Check the response status code
+    if response.status_code == 200:
+        # If the request was successful, parse the JSON response
+        comments = response.json()
+        
+        # Extract and print comments
+        if comments.get('comments'):
+            for comment in comments['comments']:
+                print(f"User: {comment['user']['username']}")
+                print(f"Comment: {comment['comment_text']}")
+                print(f"Timestamp: {comment['date_created']}")
+                print('-' * 50)
+        else:
+            print("No comments found for this task.")
+    else:
+        # If the request failed, print the error
+        print(f"Error fetching comments: {response.status_code} - {response.text}")
+
+
+    
     custom_fields = payload.get('custom_fields', [])
     print("CUSTOM: ", custom_fields)
     
