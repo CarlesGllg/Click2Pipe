@@ -26,13 +26,14 @@ def listen_to_webhook():
         if field['name'] == 'ROB: PipeDrive OrgID':  # Use the actual custom field name
             custom_field_value = field['value']
             print ("Valor custom: ",custom_field_value)
+            if custom_field_value is not None:
+                extracted_value = custom_field_value.replace("PDOID-", "")
+                print("Valor del PDOID: ", extracted_value)
+            else:
+                return jsonify({'error': 'Custom field not found'}), 404            
             break
                    
-    if custom_field_value is not None:
-        extracted_value = element.replace("PDOID-", "")
-        print("Valor del PDOID: ", extracted_value)
-    else:
-        return jsonify({'error': 'Custom field not found'}), 404
+
                    
     # Prepare the output object
     #comment = data.get('comment')
