@@ -11,6 +11,7 @@ def listen_to_webhook():
 
     payload = data.get('payload',[])
     task_id = data.get('id')
+    task_id = task_id.replace(":main", "")
     print("ID: ", task_id)
     print("PAYLOAD: ",payload)
 
