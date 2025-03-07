@@ -7,32 +7,33 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def listen_to_webhook():
     data = request.json  # This will contain the incoming JSON payload from ClickUp
-    print("Received data:", data)  # Log the received data (for debugging purposes)
+    #print("Received data:", data)  # Log the received data (for debugging purposes)
 
-    # Process the incoming data (you can use the data to create a follow-up activity in Pipedrive)
-    task_id = data.get('ID')
+    custom_fields = data.get('custom_fields', [])
     
-    print("PUNT 0. ID = ",task_id)
+    print("PUNT 0. Custom = ",custom_fields)
     # Get the webhook data and split it into a list
     #elements = data.split(',')
-    print("PUNT 1")
+    
     # Initialize a variable to hold the extracted value
     extracted_value = None
 
     # Iterate through the elements to find one containing "PDOID-"
-    for element in data:
-        if "PDOID-" in element:
-            print("Element:", element)
-            # Remove the "PDOID-" substring and store the result
-            extracted_value = element.replace("PDOID-", "")
-            print("PUNT 2: ",extracted_value)
-            break  # Exit the loop once we find the first match
-
+    for field in custom_fields:
+        if field['name'] == 'ROB: PipeDrive OrgID':  # Use the actual custom field name
+            custom_field_value = field['value']
+            print ("Valor custom: ",custom_field_value)
+            break
+                   
+    if custom_field_value is not None:
+        extracted_value = element.replace("PDOID-", "")
+        print("Valor del PDOID: ", extracted_value)
+    else:
+        return jsonify({'error': 'Custom field not found'}), 404
+                   
     # Prepare the output object
-    pipedrive_oid = {'extracted_value': extracted_value}
+    #comment = data.get('comment')
     
-    comment = data.get('comment')
-
     # Call Pipedrive API to create the follow-up activity
     
     #create_pipedrive_activity(pipedrive_oid, comment)
