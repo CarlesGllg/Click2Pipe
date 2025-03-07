@@ -7,15 +7,15 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def listen_to_webhook():
     data = request.json  # This will contain the incoming JSON payload from ClickUp
-    print("Received data:", data)  # Log the received data (for debugging purposes)
+    #print("Received data:", data)  # Log the received data (for debugging purposes)
 
     # Process the incoming data (you can use the data to create a follow-up activity in Pipedrive)
     task_id = data.get('ID')
     
-    
+    print("PUNT 0")
     # Get the webhook data and split it into a list
     elements = data.split(',')
-
+    print("PUNT 1")
     # Initialize a variable to hold the extracted value
     extracted_value = None
 
@@ -25,6 +25,7 @@ def listen_to_webhook():
             print("Element:", element)
             # Remove the "PDOID-" substring and store the result
             extracted_value = element.replace("PDOID-", "")
+            print("PUNT 2: ",extracted_value)
             break  # Exit the loop once we find the first match
 
     # Prepare the output object
