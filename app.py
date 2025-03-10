@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from datetime import datetime
 import requests
 
 app = Flask(__name__)
@@ -36,7 +37,11 @@ def listen_to_webhook():
                 print(f"COMENTARI: {comment}")
                 print(f"User: {comment['user']['username']}")
                 print(f"Comment: {comment['comment_text']}")
-                #print(f"Timestamp: {comment['date_created']}")
+                timestamp = comment['date']
+                timestamp_in_seconds = timestamp / 1000
+                date_time = datetime.utcfromtimestamp(timestamp_in_seconds)
+                formatted_date = date_time.strftime('%d/%m/%Y')
+                print(f"DATA: {formatted_date}")
                 print('-' * 100)
         else:
             print("No comments found for this task.")
