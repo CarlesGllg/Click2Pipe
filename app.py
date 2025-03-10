@@ -42,7 +42,7 @@ def listen_to_webhook():
                 timestamp = comment['date']
                 timestamp_in_seconds = int(timestamp) / 1000
                 date_time = datetime.utcfromtimestamp(timestamp_in_seconds)
-                formatted_date = date_time.strftime('%d/%m/%Y')
+                formatted_date = date_time.strftime('%Y-%m-%d')
                 print(f"DATA: {formatted_date}")
                 com_data = {formatted_date}
                 print('-' * 100)
