@@ -10,8 +10,7 @@ def listen_to_webhook():
     #print("Received data:", data)  # Log the received data (for debugging purposes)
 
     payload = data.get('payload',[])
-    task_id = data.get('id')
-    task_id = task_id.replace(":main", "")
+    task_id = payload.get('id')
     print("ID: ", task_id)
     print("PAYLOAD: ",payload)
 
