@@ -46,9 +46,9 @@ def listen_to_webhook():
 
     
     custom_fields = payload.get('custom_fields', [])
-    print("CUSTOM: ", custom_fields)
+    #print("CUSTOM: ", custom_fields)
     
-    print("PUNT 0. Custom = ",custom_fields)
+    #print("PUNT 0. Custom = ",custom_fields)
     # Get the webhook data and split it into a list
     #elements = data.split(',')
     
