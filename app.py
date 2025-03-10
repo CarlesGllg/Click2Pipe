@@ -120,7 +120,7 @@ def create_PD_follow_up_activity(api_key, org_id, user, activity_text, activity_
         'due_date': activity_date,  # Due date from the passed parameter
         'type': 'follow_up',  # Type of activity
         'organization_id': org_id,  # Organization ID
-        'user_id': 5371109,
+        'user_id': '5371109',
         'note': activity_text  # The body of the activity (text)
     }
     
