@@ -12,7 +12,7 @@ def listen_to_webhook():
     payload = data.get('payload',[])
     task_id = payload.get('id')
     print("ID: ", task_id)
-    print("PAYLOAD: ",payload)
+    #print("PAYLOAD: ",payload)
 
     # Define the URL for getting task comments
     url = f'https://api.clickup.com/api/v2/task/{task_id}/comment'
@@ -33,6 +33,7 @@ def listen_to_webhook():
         # Extract and print comments
         if comments.get('comments'):
             for comment in comments['comments']:
+                print(f"COMENTARI: {comment}")
                 print(f"User: {comment['user']['username']}")
                 print(f"Comment: {comment['comment_text']}")
                 #print(f"Timestamp: {comment['date_created']}")
