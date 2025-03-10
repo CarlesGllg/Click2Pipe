@@ -87,6 +87,9 @@ def listen_to_webhook():
     
     if (pdoid is not None):
         print(f"PD-OID: {pdoid}")
+        activity = create_PD_follow_up_activity('61283559c8d298f5a3fc1eece05d7c2b1e5617c3', pdoid, com_user, com_text, com_data)
+        if activity:
+            print("Follow-up Activity Created:", activity)
     
     return jsonify({"status": "success"}), 200
 
@@ -107,16 +110,18 @@ def get_PD_organization_info(api_key, org_id):
         return None
 
 # Function to create a follow-up activity
-def create_PD_follow_up_activity(api_key, org_id, activity_text):
+def create_PD_follow_up_activity(api_key, org_id, user, activity_text, activity_date):
     # Endpoint to create a follow-up activity
     url = 'https://api.pipedrive.com/v1/activities?api_token={}'.format(api_key)
     
     # Payload for the new activity (a follow-up in this case)
     activity_data = {
-        'subject': activity_text,       # Activity subject (text passed as variable)
-        'due_date': '2025-03-15',       # Example due date (adjust as needed)
-        'type': 'follow_up',            # Type of activity (can be adjusted to your needs)
-        'organization_id': org_id       # Link to the organization
+        'subject': 'CS: Comentari a ClickUp',  # Always set this subject 
+        'due_date': activity_date,  # Due date from the passed parameter
+        'type': 'follow_up',  # Type of activity
+        'organization_id': org_id,  # Organization ID
+        'user_id': user,  # User ID assigned to this activity
+        'note': activity_text  # The body of the activity (text)
     }
     
     # Make a POST request to create the activity
