@@ -35,8 +35,8 @@ def listen_to_webhook():
             for comment in comments['comments']:
                 print(f"User: {comment['user']['username']}")
                 print(f"Comment: {comment['comment_text']}")
-                print(f"Timestamp: {comment['date_created']}")
-                print('-' * 50)
+                #print(f"Timestamp: {comment['date_created']}")
+                print('-' * 100)
         else:
             print("No comments found for this task.")
     else:
