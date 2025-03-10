@@ -34,15 +34,19 @@ def listen_to_webhook():
         # Extract and print comments
         if comments.get('comments'):
             for comment in comments['comments']:
-                print(f"COMENTARI: {comment}")
+                #print(f"COMENTARI: {comment}")
                 print(f"User: {comment['user']['username']}")
+                com_user = comment['user']['username']
                 print(f"Comment: {comment['comment_text']}")
+                com_text = comment['comment_text']
                 timestamp = comment['date']
                 timestamp_in_seconds = int(timestamp) / 1000
                 date_time = datetime.utcfromtimestamp(timestamp_in_seconds)
                 formatted_date = date_time.strftime('%d/%m/%Y')
                 print(f"DATA: {formatted_date}")
+                com_data = {formatted_date}
                 print('-' * 100)
+                break
         else:
             print("No comments found for this task.")
     else:
@@ -78,31 +82,54 @@ def listen_to_webhook():
     # Prepare the output object
     #comment = data.get('comment')
     
-    # Call Pipedrive API to create the follow-up activity
+    # Call Pipedrive API to get OrgID
+    pdoid = get_PD_organization_info ('61283559c8d298f5a3fc1eece05d7c2b1e5617c3', extracted_value)
     
-    #create_pipedrive_activity(pipedrive_oid, comment)
+    if (pdoid is not None):
+        print(f"PD-OID: {pdoid}")
+    
     return jsonify({"status": "success"}), 200
 
-# Function to create an activity in Pipedrive
-def create_pipedrive_activity(pipedrive_oid, comment):
-    pipedrive_api_url = 'https://api.pipedrive.com/v1/activities'
-    pipedrive_api_token = 'your_pipedrive_api_token'  # Replace with your Pipedrive API token
 
-    data = {
-        'subject': 'Follow-up Activity',
-        'note': comment,  # The comment text from ClickUp
-        'type': 'follow_up',  # You can choose the activity type
-        'due_date': '2025-03-07',  # Optional due date (if you want to set one)
-        'org_id': pipedrive_oid  # Link the activity to the correct Pipedrive organization
-    }
-
-    headers = {'Authorization': f'Bearer {pipedrive_api_token}'}
-
-    response = requests.post(pipedrive_api_url, data=data, headers=headers)
-    if response.status_code == 201:
-        print("Follow-up activity created successfully.")
+def get_PD_organization_info(api_key, org_id):
+    # Endpoint to get the organization info
+    url = f'https://api.pipedrive.com/v1/organizations/{org_id}?api_token={api_key}'
+    
+    # Make a GET request to the Pipedrive API
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        # Return the organization data if successful
+        return response.json()['data']
     else:
-        print("Error creating activity:", response.json())
+        # Handle error response
+        print(f"Error: {response.status_code}")
+        return None
+
+# Function to create a follow-up activity
+def create_PD_follow_up_activity(api_key, org_id, activity_text):
+    # Endpoint to create a follow-up activity
+    url = 'https://api.pipedrive.com/v1/activities?api_token={}'.format(api_key)
+    
+    # Payload for the new activity (a follow-up in this case)
+    activity_data = {
+        'subject': activity_text,       # Activity subject (text passed as variable)
+        'due_date': '2025-03-15',       # Example due date (adjust as needed)
+        'type': 'follow_up',            # Type of activity (can be adjusted to your needs)
+        'organization_id': org_id       # Link to the organization
+    }
+    
+    # Make a POST request to create the activity
+    response = requests.post(url, data=activity_data)
+    
+    if response.status_code == 201:
+        # Return the response data if activity is created successfully
+        return response.json()['data']
+    else:
+        # Handle error response
+        print(f"Error: {response.status_code}")
+        return None
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
