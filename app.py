@@ -84,11 +84,11 @@ def listen_to_webhook():
     
     # Call Pipedrive API to get OrgID
     pdoid = get_PD_organization_info ('61283559c8d298f5a3fc1eece05d7c2b1e5617c3', extracted_value)
-    pd_org_id = int(pdoid)
     
     if (pdoid is not None):
         print(f"PD-OID: {pdoid}")
         com_user = 5371109   #Usuari de l'Adriana
+        pd_org_id = 20540
         activity = create_PD_follow_up_activity('61283559c8d298f5a3fc1eece05d7c2b1e5617c3', pd_org_id, com_user, com_text, com_data)
         if activity:
             print("Follow-up Activity Created:", activity)
