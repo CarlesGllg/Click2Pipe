@@ -87,6 +87,7 @@ def listen_to_webhook():
     
     if (pdoid is not None):
         print(f"PD-OID: {pdoid}")
+        com_user = 5371109
         activity = create_PD_follow_up_activity('61283559c8d298f5a3fc1eece05d7c2b1e5617c3', pdoid, com_user, com_text, com_data)
         if activity:
             print("Follow-up Activity Created:", activity)
@@ -120,7 +121,7 @@ def create_PD_follow_up_activity(api_key, org_id, user, activity_text, activity_
         'due_date': activity_date,  # Due date from the passed parameter
         'type': 'follow_up',  # Type of activity
         'organization_id': org_id,  # Organization ID
-        'user_id': '5371109',
+        'user_id': user,
         'note': activity_text  # The body of the activity (text)
     }
     
