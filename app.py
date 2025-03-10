@@ -111,17 +111,17 @@ def get_PD_organization_info(api_key, org_id):
         return None
 
 # Function to create a follow-up activity
-def create_PD_follow_up_activity(api_key, org_id, user, activity_text, activity_date):
+def create_PD_follow_up_activity(api_key, org_id, user_id, activity_text, activity_date):
     # Endpoint to create a follow-up activity
     url = 'https://api.pipedrive.com/v1/activities?api_token={}'.format(api_key)
     
     # Payload for the new activity (a follow-up in this case)
     activity_data = {
         'subject': 'CS: Comentari a ClickUp',  # Always set this subject 
-        'due_date': activity_date,  # Due date from the passed parameter
+        'due_date': activity_date,  # Due date from the passed parameter (in format 'yyyy-mm-dd')
         'type': 'follow_up',  # Type of activity
-        'organization_id': org_id,  # Organization ID
-        'user_id': user,
+        'organization_id': org_id,  # Organization ID (make sure this is valid)
+        'user_id': user_id,  # User ID assigned to this activity (make sure this is valid)
         'note': activity_text  # The body of the activity (text)
     }
     
