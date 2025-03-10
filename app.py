@@ -38,7 +38,7 @@ def listen_to_webhook():
                 print(f"User: {comment['user']['username']}")
                 print(f"Comment: {comment['comment_text']}")
                 timestamp = comment['date']
-                timestamp_in_seconds = timestamp / 1000
+                timestamp_in_seconds = int(timestamp) / 1000
                 date_time = datetime.utcfromtimestamp(timestamp_in_seconds)
                 formatted_date = date_time.strftime('%d/%m/%Y')
                 print(f"DATA: {formatted_date}")
