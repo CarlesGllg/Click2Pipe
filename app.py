@@ -120,7 +120,7 @@ def create_PD_follow_up_activity(api_key, org_id, user_id, activity_text, activi
         'subject': 'CS: Comentari a ClickUp',  # Always set this subject 
         'due_date': activity_date,  # Due date from the passed parameter (in format 'yyyy-mm-dd')
         'type': 'follow_up',  # Type of activity
-        'org_id': org_id,  # Organization ID (make sure this is valid)
+        'org_id': int(org_id),  # Organization ID (make sure this is valid)
         'user_id': user_id,  # User ID assigned to this activity (make sure this is valid)
         'note': activity_text  # The body of the activity (text)
     }
