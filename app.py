@@ -123,6 +123,7 @@ def create_PD_follow_up_activity(api_key, org_id, user_id, activity_text, activi
         'type': 'follow_up',  # Type of activity
         'org_id': org_id,  # Organization ID (make sure this is valid)
         'user_id': user_id,  # User ID assigned to this activity (make sure this is valid)
+        'done': true,
         'note': activity_text  # The body of the activity (text)
     }
     
