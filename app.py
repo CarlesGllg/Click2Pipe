@@ -25,12 +25,11 @@ def listen_to_webhook():
 
     # Send GET request to the ClickUp API
     response = requests.get(url, headers=HEADERS)
-    print(f"RESPOSTA_STATUS_CODE: {response.status_code}")
+
     # Check the response status code
     if response.status_code == 200:
         # If the request was successful, parse the JSON response
         comments = response.json()
-        print(f"DADES: {comments}")
 
         # Extract and print comments
         if comments.get('comments'):
@@ -55,48 +54,48 @@ def listen_to_webhook():
 
 
     print ("PUNT 0")
-    custom_fields = comments.get('custom_fields', [])
+    url_global = f'https://api.clickup.com/api/v2/task/{task_id}'
+    response = requests.get(url_global, headers=HEADERS)
+    if response.status_code == 200:
+        # If the request was successful, parse the JSON response
+        task_data = response.json()
+        print(f"DADES_TASK: {comments}")
+        custom_fields = task_data.get('custom_fields', [])
     
-    print("CUSTOM: ", custom_fields)
+        print("CUSTOM: ", custom_fields)
     
-    #print("PUNT 0. Custom = ",custom_fields)
-    # Get the webhook data and split it into a list
-    #elements = data.split(',')
-    
-    # Initialize a variable to hold the extracted value
-    extracted_value = None
+        extracted_value = None
 
-    # Iterate through the elements to find one containing "PDOID-"
-    print ("PUNT 1")
-    for field in custom_fields:
-        if field['name'] == 'ROB: PipeDrive OrgID':  # Use the actual custom field name
-            custom_field_value = field['value']
-            print ("Valor custom: ",custom_field_value)
-            if custom_field_value is not None:
-                extracted_value = custom_field_value.replace("PDOID-", "")
-                print("Valor del PDOID: ", extracted_value)
-            else:
-                return jsonify({'error': 'Custom field not found'}), 404            
-            break
+        # Iterate through the elements to find one containing "PDOID-"
+    
+        for field in custom_fields:
+            if field['name'] == 'ROB: PipeDrive OrgID':  # Use the actual custom field name
+                custom_field_value = field['value']
+                print ("Valor custom: ",custom_field_value)
+                if custom_field_value is not None:
+                    extracted_value = custom_field_value.replace("PDOID-", "")
+                    print("Valor del PDOID: ", extracted_value)
+                else:
+                    return jsonify({'error': 'Custom field not found'}), 404            
+                break
                    
 
                    
-    # Prepare the output object
-    #comment = data.get('comment')
+        # Call Pipedrive API to get OrgID
+        pdoid = get_PD_organization_info ('61283559c8d298f5a3fc1eece05d7c2b1e5617c3', extracted_value)
     
-    # Call Pipedrive API to get OrgID
-    pdoid = get_PD_organization_info ('61283559c8d298f5a3fc1eece05d7c2b1e5617c3', extracted_value)
+        if (pdoid is not None):
+            print(f"PD-OID: {pdoid}")
+            com_user = 5371109   #Usuari de l'Adriana
+            pd_org_id = extracted_value
+            activity = create_PD_follow_up_activity('61283559c8d298f5a3fc1eece05d7c2b1e5617c3', pd_org_id, com_user, com_text, com_data)
+            if activity:
+                print("Follow-up Activity Created:", activity)
     
-    if (pdoid is not None):
-        print(f"PD-OID: {pdoid}")
-        com_user = 5371109   #Usuari de l'Adriana
-        pd_org_id = extracted_value
-        activity = create_PD_follow_up_activity('61283559c8d298f5a3fc1eece05d7c2b1e5617c3', pd_org_id, com_user, com_text, com_data)
-        if activity:
-            print("Follow-up Activity Created:", activity)
-    
-    return jsonify({"status": "success"}), 200
-
+        return jsonify({"status": "success"}), 200
+    else:
+        # If the request failed, print the error
+        print(f"Error fetching data from TASK: {response.status_code} - {response.text}")
 
 def get_PD_organization_info(api_key, org_id):
     # Endpoint to get the organization info
