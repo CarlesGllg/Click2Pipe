@@ -6,14 +6,8 @@ app = Flask(__name__)
 
 # Endpoint to listen for the incoming webhook
 @app.route('/webhook', methods=['POST'])
-def listen_to_webhook():
-    data = request.json  # This will contain the incoming JSON payload from ClickUp
-    #print("Received data:", data)  # Log the received data (for debugging purposes)
-
-    payload = data.get('payload',[])
-    task_id = payload.get('id')
-    print("ID: ", task_id)
-    #print("PAYLOAD: ",payload)
+def listen_to_webhook(task_id):
+    print(f"Received task_id: {task_id}")
 
     # Define the URL for getting task comments
     url = f'https://api.clickup.com/api/v2/task/{task_id}/comment'
@@ -22,19 +16,18 @@ def listen_to_webhook():
     HEADERS = {
         'Authorization': 'pk_82705525_4FUTKYOJDRLEJSF270VOWZW3RQZ80F0T'
     }
-    
+
     # Send GET request to the ClickUp API
     response = requests.get(url, headers=HEADERS)
-    
+
     # Check the response status code
     if response.status_code == 200:
         # If the request was successful, parse the JSON response
         comments = response.json()
-        
+
         # Extract and print comments
         if comments.get('comments'):
             for comment in comments['comments']:
-                #print(f"COMENTARI: {comment}")
                 print(f"User: {comment['user']['username']}")
                 com_user = comment['user']['username']
                 print(f"Comment: {comment['comment_text']}")
@@ -43,7 +36,7 @@ def listen_to_webhook():
                 timestamp_in_seconds = int(timestamp) / 1000
                 date_time = datetime.utcfromtimestamp(timestamp_in_seconds)
                 formatted_date = date_time.strftime('%Y-%m-%d')
-                print(f"DATA: {formatted_date}")
+                print(f"DATE: {formatted_date}")
                 com_data = {formatted_date}
                 print('-' * 100)
                 break
