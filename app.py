@@ -25,7 +25,7 @@ def listen_to_webhook():
 
     # Send GET request to the ClickUp API
     response = requests.get(url, headers=HEADERS)
-
+    print(f"RESPOSTA_STATUS_CODE: {response.status_code}")
     # Check the response status code
     if response.status_code == 200:
         # If the request was successful, parse the JSON response
