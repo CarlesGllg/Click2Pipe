@@ -53,13 +53,12 @@ def listen_to_webhook():
         print(f"Error fetching comments: {response.status_code} - {response.text}")
 
 
-    print ("PUNT 0")
     url_global = f'https://api.clickup.com/api/v2/task/{task_id}'
     response = requests.get(url_global, headers=HEADERS)
     if response.status_code == 200:
         # If the request was successful, parse the JSON response
         task_data = response.json()
-        print(f"DADES_TASK: {comments}")
+        print(f"DADES_TASK: {task_data}")
         custom_fields = task_data.get('custom_fields', [])
     
         #print("CUSTOM: ", custom_fields)
