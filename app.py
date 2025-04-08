@@ -30,6 +30,7 @@ def listen_to_webhook():
     if response.status_code == 200:
         # If the request was successful, parse the JSON response
         comments = response.json()
+        print(f"DADES: {comments}")
 
         # Extract and print comments
         if comments.get('comments'):
