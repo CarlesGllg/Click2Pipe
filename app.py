@@ -53,9 +53,10 @@ def listen_to_webhook():
         print(f"Error fetching comments: {response.status_code} - {response.text}")
 
 
-    
+    print ("PUNT 0")
     custom_fields = comments.get('custom_fields', [])
-    #print("CUSTOM: ", custom_fields)
+    
+    print("CUSTOM: ", custom_fields)
     
     #print("PUNT 0. Custom = ",custom_fields)
     # Get the webhook data and split it into a list
@@ -65,6 +66,7 @@ def listen_to_webhook():
     extracted_value = None
 
     # Iterate through the elements to find one containing "PDOID-"
+    print ("PUNT 1")
     for field in custom_fields:
         if field['name'] == 'ROB: PipeDrive OrgID':  # Use the actual custom field name
             custom_field_value = field['value']
