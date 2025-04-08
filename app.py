@@ -6,7 +6,13 @@ app = Flask(__name__)
 
 # Endpoint to listen for the incoming webhook
 @app.route('/webhook', methods=['POST'])
-def listen_to_webhook(task_id):
+def listen_to_webhook():
+    # Extract task_id from URL query parameters
+    task_id = request.args.get('id')
+    
+    if not task_id:
+        return "Task ID not provided", 400  # Respond with an error if no task_id is provided
+
     print(f"Received task_id: {task_id}")
 
     # Define the URL for getting task comments
